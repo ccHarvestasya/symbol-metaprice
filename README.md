@@ -23,6 +23,8 @@ Scoped Metadata Key は `D{yyyymmdd}C000001` の形式で指定します。
 SYMBOL_NETWORK=testnet
 SYMBOL_NODE_URL=https://t.sakia.harvestasya.com:3001
 SYMBOL_PRIVATE_KEY=****************************************************************
+COIN_NO=1
+COIN_NAME=symbol
 ```
 
 設定後、以下のコマンドを実行します。
