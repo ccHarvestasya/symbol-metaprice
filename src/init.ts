@@ -25,18 +25,23 @@ const targetAddress = facade.network.publicKeyToAddress(
   targetKeyPair.publicKey,
 ) as Address
 
+const coinNo = Number(process.env.COIN_NO)
+if (!coinNo) {
+  throw new Error('COIN_NO environment variable is not defined or invalid.')
+}
+
 // startOfYearからtodayまで繰り返す
 for (let date = startOfYear; date.isBefore(today); date = date.add(1, 'day')) {
-  if (await existMetadata(date, 1, targetAddress)) continue
+  if (await existMetadata(date, coinNo, targetAddress)) continue
 
   // XYMのJPY価格を取得
-  const price = await fetchXymPriceJPY(date)
+  const price = await fetchXymPriceJPY(date, process.env.COIN_NAME as string)
   console.log(
-    `XYMのJPY価格（${date.tz('Asia/Tokyo').format('YYYY-MM-DD')}）: ¥${price}`,
+    `${process.env.COIN_NAME} JPY価格（${date.tz('Asia/Tokyo').format('YYYY-MM-DD')}）: ¥${price}`,
   )
 
   // メタデータを保存
-  await saveMetadata(date, 1, price)
+  await saveMetadata(date, coinNo, price)
 
   // 待機
   await new Promise((resolve) => setTimeout(resolve, 30000))

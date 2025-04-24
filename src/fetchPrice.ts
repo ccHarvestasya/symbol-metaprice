@@ -9,9 +9,12 @@ dayjs.extend(timezone)
 /**
  * 日本時間での指定日の価格をCoinGeckoから取得
  */
-export const fetchXymPriceJPY = async (date: dayjs.Dayjs): Promise<number> => {
+export const fetchXymPriceJPY = async (
+  date: dayjs.Dayjs,
+  coinName: string,
+): Promise<number> => {
   const jpDateStr = date.tz('Asia/Tokyo').format('DD-MM-YYYY')
-  const url = `https://api.coingecko.com/api/v3/coins/symbol/history?date=${jpDateStr}&localization=false`
+  const url = `https://api.coingecko.com/api/v3/coins/${coinName}/history?date=${jpDateStr}&localization=false`
 
   try {
     const response = await axios.get(url)
@@ -27,13 +30,3 @@ export const fetchXymPriceJPY = async (date: dayjs.Dayjs): Promise<number> => {
     throw error
   }
 }
-
-// // 使用例（今日の価格を取得）
-// const today = dayjs('2025-01-01').tz('Asia/Tokyo')
-// fetchXymPriceJPY(today)
-//   .then((price) => {
-//     console.log(
-//       `XYMのJPY価格（${today.tz('Asia/Tokyo').format('YYYY-MM-DD')}）: ¥${price}`,
-//     )
-//   })
-//   .catch(() => process.exit(1))
